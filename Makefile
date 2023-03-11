@@ -11,16 +11,16 @@ $(MB_VM_DIR):
 $(WP_VM_DIR):
 	mkdir -p $(WP_VM_DIR)
 
-start: $(VM_DIRS)
+start:
 	$(DK_COM) start
 
 stop:
 	$(DK_COM) stop
 
-restart: $(VM_DIRS)
+restart:
 	$(DK_COM) restart
 
-up: $(VM_DIRS)
+up: 	$(VM_DIRS)
 	$(DK_COM) up --detach --build
 
 #remvoe Resource
