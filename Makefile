@@ -1,54 +1,32 @@
-DOCKER = sudo docker
-COMPOSE = $(DOCKER) compose -p inception -f srcs/docker-compose.yml
-MARIADB_VOLUME = /home/yoseo/data/mariadb
-WORDPRESS_VOLUME = /home/yoseo/data/wordpress
-DEPENDENCIES = $(MARIADB_VOLUME) $(WORDPRESS_VOLUME)
+DK_COM = sudo docker compose -p inception -f srcs/docker-compose.yml
+MB_VM_DIR = /home/yoseo/data/mariadb
+WP_VM_DIR = /home/yoseo/data/wordpress
+VM_DIRS = $(MB_VM_DIR) $(WP_VM_DIR)
 
 all: up
 
-$(MARIADB_VOLUME):
-	mkdir -p $(MARIADB_VOLUME)
+$(MB_VM_DIR):
+	mkdir -p $(MB_VM_DIR)
 
-$(WORDPRESS_VOLUME):
-	mkdir -p $(WORDPRESS_VOLUME)
+$(WP_VM_DIR):
+	mkdir -p $(WP_VM_DIR)
 
-ps:
-	$(COMPOSE) ps
-
-images:
-	$(COMPOSE) images
-
-volumes:
-	$(DOCKER) volume ls
-
-networks:
-	$(DOCKER) network ls
-
-start: $(DEPENDENCIES)
-	$(COMPOSE) start
+start: $(VM_DIRS)
+	$(DK_COM) start
 
 stop:
-	$(COMPOSE) stop
+	$(DK_COM) stop
 
-restart: $(DEPENDENCIES)
-	$(COMPOSE) restart
+restart: $(VM_DIRS)
+	$(DK_COM) restart
 
-up: $(DEPENDENCIES)
-	$(COMPOSE) up --detach --build
+up: $(VM_DIRS)
+	$(DK_COM) up --detach --build
 
-down:
-	$(COMPOSE) down
-
+#remvoe Resource
 clean:
-	$(COMPOSE) down --rmi all --volumes
+	$(DK_COM) down --rmi all --volumes
 
 fclean: clean
-	sudo $(RM) -r /home/yoseo/data/*
-
-prune: down fclean
-	$(DOCKER) system prune -a -f
-
+	sudo rm -rf /home/yoseo/data/*
 re: fclean all
-
-.PHONY: all ps images volumes networks start stop restart up down clean fclean prune re
-
