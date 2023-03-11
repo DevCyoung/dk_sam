@@ -27,6 +27,16 @@ up: 	$(VM_DIRS)
 clean:
 	$(DK_COM) down --rmi all --volumes
 
+show:
+	sudo docker volume ls
+	@echo
+	sudo docker network ls
+	@echo
+	sudo docker ps -a
+	@echo
+	sudo docker images
+	@echo
+
 fclean: clean
 	sudo rm -rf /home/yoseo/data/*
 re: fclean all
